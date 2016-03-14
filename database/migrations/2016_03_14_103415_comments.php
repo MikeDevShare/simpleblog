@@ -14,7 +14,7 @@ class Comments extends Migration
     {
         //
         Schema::create('comments', function(Blueprint $table){
-            $table->inscrements('id');
+            $table->increments('id');
             $table->integer('post_id')->unsigned()->default(0);
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->integer('author_id')->unsigned()->default(0);

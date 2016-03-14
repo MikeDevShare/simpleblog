@@ -13,6 +13,11 @@ class Categories extends Migration
     public function up()
     {
         //
+        Schema::create('categories',function(Blueprint $table){
+            $table->increments('id');
+            $table->string('title')->unique();
+            $table->string('slug')->unique();            
+        });
     }
 
     /**
@@ -22,6 +27,6 @@ class Categories extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('categories');
     }
 }

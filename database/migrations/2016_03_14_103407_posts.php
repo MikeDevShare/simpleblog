@@ -12,19 +12,19 @@ class Posts extends Migration
      */
     public function up()
     {
-        Schema::create('posts',function(Blueprint `$table){
+        Schema::create('posts',function(Blueprint $table){
             $table->increments('id');
             $table->integer('author_id')->unsigned()->default(0);
-            $table->foreign('author_id')->refrences('id')->on('users')->onDelete('cascade');
+            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('post_title');
             $table->text('post_content');
             $table->enum('status',['publish','pending'])->default('publish');
             $table->integer('post_parent');
             $table->string('slug')->unique();
             $table->integer('category')->unsigned()->default(0);
-            $table->foreign('category')->refrences('id')->on('categories')->onDelete('cascade');
+            $table->foreign('category')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
-        })
+        });
     }
 
     /**
