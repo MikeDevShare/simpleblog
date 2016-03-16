@@ -15,7 +15,7 @@ class PostController extends Controller
     	);
    		$posts = posts::where('status','publish')->orderBy('created_at','desc')->paginate(5);
    		$title = 'Latest Posts';
-    	return view('welcome')->withPosts($posts)->withTitle($title);
+    	return view('home')->withPosts($posts)->withTitle($title);
     }
 	public function create(Request $request)
 	{
