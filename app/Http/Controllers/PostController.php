@@ -33,7 +33,7 @@ class PostController extends Controller
 	{
 		$post = new Posts();
 		$post->title = $request->get('title');
-		$post->body = $request->get('body');
+		$post->post_content = $request->get('body');
 		$post->slug = str_slug($post->title);
 		$post->author_id = $request->user()->id;
 		if($request->has('save'))
@@ -88,7 +88,7 @@ class PostController extends Controller
 		    }
 		  }
 		  $post->title = $title;
-		  $post->body = $request->input('body');
+		  $post->post_content = $request->input('body');
 		  if($request->has('save'))
 		  {
 		    $post->active = 0;
