@@ -36,4 +36,4 @@
         </style>
     </head>
     <body>
-    {{ $id }}
+    

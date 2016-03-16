@@ -7,8 +7,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-//use App\Http\Controllers\BasicFunc as BF;
-require_once( app_path() .'/Traits/BasicFunc.php');
+
 class Controller extends BaseController
 {
 	
@@ -18,7 +17,7 @@ class Controller extends BaseController
     		'id' => 1
     	);
    
-    	return include_view('welcome',$data,'header','footer');
+    	return view('welcome',$data);
     }
 
  
