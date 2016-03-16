@@ -16,8 +16,9 @@ class Controller extends BaseController
     	$data = array(
     		'id' => 1
     	);
-   
-    	return view('welcome',$data);
+   		$posts = Posts::where('status','publish')->orderBy('created_at','desc')->paginate(5);
+   		$title = 'Latest Posts';
+    	return view('welcome')->withPosts($posts)->withTitle($title);
     }
 
  
