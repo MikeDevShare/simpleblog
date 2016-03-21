@@ -36,6 +36,7 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+                    {{var_dump(Auth::guest(),Session::all())}}
                     @if (Auth::guest())
                         <li>
                            <a href="{{ url('/auth/login') }}">Login</a>

@@ -19,30 +19,14 @@ Route::get('/','PostController@index');
 
 Route::get('/home',['as' => 'home', 'uses' => 'PostController@index']);
 //authentication
-Route::controllers([
- 'auth' => 'Auth\AuthController',
- 'password' => 'Auth\PasswordController',
-]);
-Route::group(['middleware' => ['auth']], function()
-{
- // show new post form
- Route::get('new-post','PostController@create');
- // save new post
- Route::post('new-post','PostController@store');
- // edit post form
- Route::get('edit/{slug}','PostController@edit');
- // update post
- Route::post('update','PostController@update');
- // delete post
- Route::get('delete/{id}','PostController@destroy');
- // display user's all posts
- Route::get('my-all-posts','UserController@user_posts_all');
- // display user's drafts
- Route::get('my-drafts','UserController@user_posts_draft');
- // add comment
- Route::post('comment/add','CommentController@store');
- // delete comment
- Route::post('comment/delete/{id}','CommentController@distroy');
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
+Route::group(['middleware' => ['web']], function () {
+    Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'PostController@index']);
 });
 //users profile
 Route::get('user/{id}','UserController@profile')->where('id', '[0-9]+');

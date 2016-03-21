@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Auth;
 use Illuminate\Http\Request;
 use App\posts;
 use App\User;
@@ -13,6 +13,7 @@ class PostController extends Controller
     	$data = array(
     		'id' => 1
     	);
+    	var_dump(Auth::check());
    		$posts = posts::where('status','publish')->orderBy('created_at','desc')->paginate(5);
    		$title = 'Latest Posts';
     	return view('home')->withPosts($posts)->withTitle($title);
@@ -29,6 +30,7 @@ class PostController extends Controller
 		  return redirect('/')->withErrors('You have not sufficient permissions for writing post');
 		}
 	}
+
 	public function store(PostFormRequest $request)
 	{
 		$post = new Posts();

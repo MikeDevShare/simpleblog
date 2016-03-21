@@ -7,7 +7,9 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-
+use Illuminate\Contracts\Auth\Guard;
+use App\Http\Requests\Auth\LoginRequest; 
+use App\Http\Requests\Auth\RegisterRequest;
 class AuthController extends Controller
 {
     /*
@@ -28,18 +30,28 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+   protected $user; 
+    
+    /**
+     * For Guard
+     *
+     * @var Authenticator
+     */
+    protected $auth;
+
+    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
     /**
      * Create a new authentication controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Guard $auth, User $user)
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        $this->user = $user; 
+        $this->auth = $auth;
+        $this->middleware('guest', ['except' => 'getLogout']);
     }
-
     /**
      * Get a validator for an incoming registration request.
      *
@@ -68,5 +80,44 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+     protected function getLogin() {
+        return View('auth.login');
+    }
+
+    protected function postLogin(LoginRequest $request) {
+        if ($this->auth->attempt($request->only('email', 'password'))) {
+            var_dump($this->auth->check());die();
+            return redirect('dashboard');
+        }
+ 
+        return redirect('auth/login')->withErrors([
+            'email' => 'The email or the password is invalid. Please try again.',
+        ]);
+    }
+
+    /* Register get post methods */
+    protected function getRegister() {
+        return View('auth.register');
+    }
+
+    protected function postRegister(RegisterRequest $request) {
+
+        $this->user->name = $request->name;
+        $this->user->email = $request->email;
+        $this->user->password = bcrypt($request->password);
+        $this->user->save();
+        return redirect('auth/login');
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @return Response
+     */
+    protected function getLogout()
+    {
+        $this->auth->logout();
+        return redirect('auth/login');
     }
 }
